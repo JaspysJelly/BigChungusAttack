@@ -1,0 +1,211 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://art/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Main.gd" type="Script" id=2]
+[ext_resource path="res://new_theme.tres" type="Theme" id=3]
+[ext_resource path="res://ScoreLabel.gd" type="Script" id=4]
+[ext_resource path="res://new_them1e.tres" type="Theme" id=5]
+[ext_resource path="res://texture-grass-green-simple-wallpaper-preview.jpg" type="Texture" id=6]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 30, 1, 30 )
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 60, 2, 60 )
+
+[sub_resource type="Skin" id=8]
+
+[sub_resource type="SpatialMaterial" id=7]
+
+[sub_resource type="CylinderMesh" id=3]
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.580392, 0.545098, 0.0666667, 1 )
+
+[sub_resource type="Curve3D" id=5]
+_data = {
+"points": PoolVector3Array( 0, 0, 0, 0, 0, 0, -14.0457, 0, -15.6127, 0, 0, 0, 0, 0, 0, 13.9931, 0, -15.5163, 0, 0, 0, 0, 0, 0, 14.2822, 0, 18.8818, 0, 0, 0, 0, 0, 0, -13.6603, 0, 18.9782, 0, 0, 0, 0, 0, 0, -14.0457, 0, -15.6127 ),
+"tilts": PoolRealArray( 0, 0, 0, 0, 0 )
+}
+
+[sub_resource type="StyleBoxTexture" id=6]
+
+[sub_resource type="CapsuleShape" id=9]
+margin = 0.001
+radius = 0.001
+height = 0.001
+
+[node name="Main" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Ground" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Ground"]
+mesh = SubResource( 2 )
+skin = SubResource( 8 )
+material/0 = SubResource( 7 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.717896, 0.696151, 0, -0.696151, 0.717896, 0, 15.6309, 13.1072 )
+shadow_enabled = true
+
+[node name="Camera pivot" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.765292, 0.643683, 0, -0.643683, 0.765292, -0.17902, -0.22341, 2.87475 )
+
+[node name="Camera" type="Camera" parent="Camera pivot"]
+transform = Transform( 1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, 1.42644, 18.9341 )
+projection = 1
+current = true
+size = 19.0
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+
+[node name="Cylinders" type="Spatial" parent="."]
+
+[node name="MeshInstance" type="MeshInstance" parent="Cylinders"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.958, 0, -15 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="Cylinders"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.042, 0, -15 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="Cylinders"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -13.958, 0, 19 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="Cylinders"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 14.042, 0, 19 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
+
+[node name="SpawnPath" type="Path" parent="."]
+curve = SubResource( 5 )
+
+[node name="SpawnLocation" type="PathFollow" parent="SpawnPath"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -14.0457, 0, -15.6127 )
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 0.4
+autostart = true
+
+[node name="UserInterface" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 3 )
+
+[node name="ScoreLabel" type="Label" parent="UserInterface"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 112.0
+margin_bottom = 47.0
+custom_colors/font_color = Color( 0.184314, 0.172549, 0.2, 1 )
+text = "Score: 0"
+script = ExtResource( 4 )
+
+[node name="Retry" type="ColorRect" parent="UserInterface"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.270588 )
+
+[node name="Label" type="Label" parent="UserInterface/Retry"]
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+margin_top = -15.5
+margin_bottom = 15.5
+text = "Press space or enter to retry!"
+align = 1
+
+[node name="Made By" type="Label" parent="UserInterface"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -209.0
+margin_top = 16.0
+margin_right = -16.0
+margin_bottom = 47.0
+custom_colors/font_color = Color( 0.184314, 0.172549, 0.2, 1 )
+text = "Game by Jasper"
+
+[node name="Button" type="Button" parent="UserInterface"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -286.0
+margin_top = 22.0
+margin_right = -16.0
+margin_bottom = 69.0
+theme = ExtResource( 5 )
+custom_colors/font_color_disabled = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/normal = SubResource( 6 )
+text = "Return To Main Menu"
+
+[node name="KinematicBody" type="KinematicBody" parent="."]
+transform = Transform( 16.0672, 0, 0, 0, 0.939108, 0, 0, 0, 24.1068, 0, 0.155391, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 3.3583, 0, 0, 0, 1, 0, 0, 0 )
+shape = SubResource( 9 )
+
+[node name="Sprite3D" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37114e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0, 0, 0 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D2" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0, 0, 0.65004 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D3" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0.892931, 0, 0 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D4" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0.892931, 0, 0.65004 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D5" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, -0.885975, 0, 0 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D6" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999998, 0, 0.134169, -5.8647e-09, -0.885975, 0, 0.65004 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D7" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0, 0, -1.29384 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D8" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0, 0, -0.643802 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D9" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999999, 0, 0.134169, -5.8647e-09, 0.892931, 0, -1.29384 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D10" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999998, 0, 0.134169, -5.8647e-09, 0.892931, 0, -0.643802 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D11" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999998, 0, 0.134169, -5.8647e-09, -0.885975, 0, -1.29384 )
+texture = ExtResource( 6 )
+
+[node name="Sprite3D12" type="Sprite3D" parent="KinematicBody/CollisionShape"]
+transform = Transform( 0.122713, 0, 0, 0, -4.37113e-08, -0.999998, 0, 0.134169, -5.8647e-09, -0.885975, 0, -0.643803 )
+texture = ExtResource( 6 )
+
+[connection signal="hit" from="Player" to="." method="_on_Player_hit"]
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+[connection signal="pressed" from="UserInterface/Button" to="." method="_on_Button_pressed"]
